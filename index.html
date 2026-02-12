@@ -1,0 +1,3286 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="ZENFLOW — Premium all-in-one productivity web application"
+    />
+    <meta name="theme-color" content="#0F0F1A" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>ZENFLOW — All-in-One Productivity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ==================== ONBOARDING MODAL ==================== -->
+    <div
+      id="onboarding-overlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="onboarding-title"
+      hidden
+    >
+      <div class="modal modal--onboarding">
+        <div class="onboarding-step" id="onboarding-step-1" data-step="1">
+          <div class="onboarding-logo" aria-hidden="true">
+            <span class="logo-icon">⚡</span>
+            <h1 class="gradient-text">ZENFLOW</h1>
+          </div>
+          <p class="onboarding-tagline">
+            Your calm, powerful productivity companion.
+          </p>
+          <h2 id="onboarding-title" class="onboarding-heading">
+            Welcome, Adventurer!
+          </h2>
+          <p class="onboarding-description">
+            Let's set up your profile to get started.
+          </p>
+
+          <div class="form-group">
+            <label for="onboarding-name" class="form-label"
+              >What should we call you?</label
+            >
+            <input
+              type="text"
+              id="onboarding-name"
+              class="form-input"
+              placeholder="Enter your name"
+              maxlength="30"
+              autocomplete="off"
+              required
+              aria-required="true"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="onboarding-avatar" class="form-label"
+              >Avatar URL <span class="form-label-hint">(optional)</span></label
+            >
+            <input
+              type="url"
+              id="onboarding-avatar"
+              class="form-input"
+              placeholder="https://example.com/avatar.png"
+              autocomplete="off"
+            />
+          </div>
+
+          <button
+            type="button"
+            id="onboarding-next-btn"
+            class="btn btn--primary btn--block"
+            disabled
+          >
+            Next <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div
+          class="onboarding-step"
+          id="onboarding-step-2"
+          data-step="2"
+          hidden
+        >
+          <h2 class="onboarding-heading">Choose Your Class</h2>
+          <p class="onboarding-description">
+            Each class represents your productivity style.
+          </p>
+
+          <div
+            class="class-grid"
+            role="radiogroup"
+            aria-label="Character class selection"
+          >
+            <button
+              type="button"
+              class="class-card"
+              data-class="warrior"
+              role="radio"
+              aria-checked="false"
+              aria-label="Warrior class"
+            >
+              <span class="class-icon" aria-hidden="true">⚔️</span>
+              <h3 class="class-name">Warrior</h3>
+              <p class="class-desc">
+                Strength &amp; discipline. Tackle tasks head-on.
+              </p>
+            </button>
+            <button
+              type="button"
+              class="class-card"
+              data-class="mage"
+              role="radio"
+              aria-checked="false"
+              aria-label="Mage class"
+            >
+              <span class="class-icon" aria-hidden="true">🔮</span>
+              <h3 class="class-name">Mage</h3>
+              <p class="class-desc">
+                Wisdom &amp; focus. Master the flow state.
+              </p>
+            </button>
+            <button
+              type="button"
+              class="class-card"
+              data-class="rogue"
+              role="radio"
+              aria-checked="false"
+              aria-label="Rogue class"
+            >
+              <span class="class-icon" aria-hidden="true">🗡️</span>
+              <h3 class="class-name">Rogue</h3>
+              <p class="class-desc">
+                Speed &amp; efficiency. Get things done fast.
+              </p>
+            </button>
+            <button
+              type="button"
+              class="class-card"
+              data-class="healer"
+              role="radio"
+              aria-checked="false"
+              aria-label="Healer class"
+            >
+              <span class="class-icon" aria-hidden="true">🌿</span>
+              <h3 class="class-name">Healer</h3>
+              <p class="class-desc">
+                Balance &amp; well-being. Sustainable productivity.
+              </p>
+            </button>
+          </div>
+
+          <div class="onboarding-actions">
+            <button
+              type="button"
+              id="onboarding-back-btn"
+              class="btn btn--ghost"
+            >
+              <span aria-hidden="true">←</span> Back
+            </button>
+            <button
+              type="button"
+              id="onboarding-start-btn"
+              class="btn btn--primary"
+              disabled
+            >
+              Begin Your Journey <span aria-hidden="true">🚀</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== CONFETTI CANVAS ==================== -->
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+    <!-- ==================== LEVEL UP MODAL ==================== -->
+    <div
+      id="levelup-overlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="levelup-title"
+      hidden
+    >
+      <div class="modal modal--levelup">
+        <div class="levelup-glow" aria-hidden="true"></div>
+        <span class="levelup-icon" aria-hidden="true">⭐</span>
+        <h2 id="levelup-title" class="levelup-heading">Level Up!</h2>
+        <p class="levelup-level">
+          You reached <strong id="levelup-level-number">Level 2</strong>
+        </p>
+        <p class="levelup-reward" id="levelup-reward-text"></p>
+        <button type="button" id="levelup-close-btn" class="btn btn--primary">
+          Continue
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== OVERDUE ALERT MODAL (Change 4) ==================== -->
+    <div
+      id="overdue-alert-overlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="overdue-alert-title"
+      hidden
+    >
+      <div class="modal modal--overdue-alert">
+        <span class="confirm-icon" aria-hidden="true">⚠️</span>
+        <h2 id="overdue-alert-title" class="confirm-title">
+          You have overdue tasks!
+        </h2>
+        <p class="confirm-message">These tasks need your attention:</p>
+        <div class="overdue-alert-list" id="overdue-alert-list" role="list">
+          <!-- Dynamically populated -->
+        </div>
+        <div
+          class="modal-actions"
+          style="border-top: none; padding: 0; justify-content: center"
+        >
+          <button
+            type="button"
+            class="btn btn--ghost"
+            id="overdue-alert-dismiss-btn"
+          >
+            Dismiss
+          </button>
+          <button
+            type="button"
+            class="btn btn--primary"
+            id="overdue-alert-view-btn"
+          >
+            View Tasks
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAG MANAGEMENT MODAL (Change 7) ==================== -->
+    <div
+      id="tag-modal-overlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tag-modal-title"
+      hidden
+    >
+      <div class="modal modal--tag">
+        <div class="modal-header">
+          <h2 class="modal-title" id="tag-modal-title">Manage Tags</h2>
+          <button
+            type="button"
+            class="modal-close"
+            id="tag-modal-close"
+            aria-label="Close tag modal"
+          >
+            ✕
+          </button>
+        </div>
+        <div style="padding: var(--space-lg) var(--space-xl)">
+          <!-- Existing tags list -->
+          <div class="tag-manage-list" id="tag-manage-list" role="list">
+            <!-- Dynamically populated -->
+          </div>
+          <p class="sidebar-empty" id="tag-manage-empty" hidden>
+            No tags yet. Create one below.
+          </p>
+
+          <!-- Add new tag form -->
+          <div class="form-group">
+            <label for="tag-form-name" class="form-label">Tag Name</label>
+            <input
+              type="text"
+              id="tag-form-name"
+              class="form-input"
+              placeholder="e.g., Work, Personal"
+              maxlength="30"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group--half">
+              <label for="tag-form-color" class="form-label">Color</label>
+              <input
+                type="color"
+                id="tag-form-color"
+                class="form-input form-input--color"
+                value="#6C63FF"
+              />
+            </div>
+            <div class="form-group form-group--half">
+              <label for="tag-form-emoji" class="form-label">Emoji</label>
+              <input
+                type="text"
+                id="tag-form-emoji"
+                class="form-input form-input--emoji"
+                placeholder="🏷️"
+                maxlength="2"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <input type="hidden" id="tag-form-id" value="" />
+
+          <div class="modal-actions" style="border-top: none; padding: 0">
+            <button
+              type="button"
+              class="btn btn--ghost"
+              id="tag-form-cancel-btn"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn--primary"
+              id="tag-form-save-btn"
+            >
+              Add Tag
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== ACHIEVEMENT UNLOCK TOAST ==================== -->
+    <div
+      id="achievement-toast"
+      class="toast toast--achievement"
+      role="alert"
+      aria-live="polite"
+      hidden
+    >
+      <span class="toast-icon" aria-hidden="true">🏆</span>
+      <div class="toast-content">
+        <strong class="toast-title">Achievement Unlocked!</strong>
+        <p class="toast-message" id="achievement-toast-message"></p>
+      </div>
+      <button
+        type="button"
+        class="toast-close"
+        aria-label="Dismiss notification"
+        id="achievement-toast-close"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- ==================== NOTIFICATION TOAST ==================== -->
+    <div
+      id="notification-toast"
+      class="toast toast--notification"
+      role="alert"
+      aria-live="polite"
+      hidden
+    >
+      <span class="toast-icon" id="notification-toast-icon" aria-hidden="true"
+        >ℹ️</span
+      >
+      <div class="toast-content">
+        <p class="toast-message" id="notification-toast-message"></p>
+      </div>
+      <button
+        type="button"
+        class="toast-close"
+        aria-label="Dismiss notification"
+        id="notification-toast-close"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- ==================== REWARD TOAST (Change 4) ==================== -->
+    <div
+      id="reward-toast"
+      class="toast toast--reward"
+      role="alert"
+      aria-live="polite"
+      hidden
+    >
+      <span class="toast-icon" aria-hidden="true">🪙</span>
+      <div class="toast-content">
+        <strong class="toast-title">Hourly Reward!</strong>
+        <p class="toast-message" id="reward-toast-message">
+          +5 Gold for coming back!
+        </p>
+      </div>
+      <button
+        type="button"
+        class="toast-close"
+        aria-label="Dismiss"
+        id="reward-toast-close"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- ==================== PENALTY TOAST (Change 1) ==================== -->
+    <div
+      id="penalty-toast"
+      class="toast toast--penalty"
+      role="alert"
+      aria-live="polite"
+      hidden
+    >
+      <span class="toast-icon" aria-hidden="true">💸</span>
+      <div class="toast-content">
+        <strong class="toast-title">Gold Penalty</strong>
+        <p class="toast-message" id="penalty-toast-message"></p>
+      </div>
+      <button
+        type="button"
+        class="toast-close"
+        aria-label="Dismiss"
+        id="penalty-toast-close"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- ==================== APP CONTAINER ==================== -->
+    <div id="app" class="app-container">
+      <!-- ========== SIDEBAR ========== -->
+      <aside
+        id="sidebar"
+        class="sidebar"
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        <div class="sidebar-inner">
+          <!-- Sidebar Header -->
+          <header class="sidebar-header">
+            <div class="sidebar-logo">
+              <span class="logo-icon" aria-hidden="true">⚡</span>
+              <h1 class="gradient-text sidebar-logo-text">ZENFLOW</h1>
+            </div>
+            <button
+              type="button"
+              id="sidebar-collapse-btn"
+              class="sidebar-collapse-btn"
+              aria-label="Toggle sidebar"
+              aria-expanded="true"
+            >
+              <span class="icon-hamburger" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </span>
+            </button>
+          </header>
+
+          <!-- User Profile Section -->
+          <section class="sidebar-profile" aria-label="User profile">
+            <div class="profile-avatar-wrap">
+              <img
+                id="sidebar-avatar"
+                class="profile-avatar"
+                src=""
+                alt="User avatar"
+                width="48"
+                height="48"
+              />
+              <span
+                class="profile-level-badge"
+                id="sidebar-level-badge"
+                aria-label="Current level"
+                >1</span
+              >
+            </div>
+            <div class="profile-info">
+              <h2
+                class="profile-username"
+                id="sidebar-username"
+                contenteditable="false"
+                role="textbox"
+                aria-label="Username"
+              >
+                Adventurer
+              </h2>
+              <span class="profile-class" id="sidebar-class">Warrior</span>
+            </div>
+
+            <!-- XP Bar -->
+            <div class="stat-bar stat-bar--xp" aria-label="Experience points">
+              <div class="stat-bar-label">
+                <span>XP</span>
+                <span id="sidebar-xp-text">0 / 100</span>
+              </div>
+              <div
+                class="stat-bar-track"
+                role="progressbar"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                id="sidebar-xp-bar-container"
+              >
+                <div
+                  class="stat-bar-fill stat-bar-fill--xp"
+                  id="sidebar-xp-fill"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <!-- HP Bar -->
+            <div class="stat-bar stat-bar--hp" aria-label="Health points">
+              <div class="stat-bar-label">
+                <span>HP</span>
+                <span id="sidebar-hp-text">100 / 100</span>
+              </div>
+              <div
+                class="stat-bar-track"
+                role="progressbar"
+                aria-valuenow="100"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                id="sidebar-hp-bar-container"
+              >
+                <div
+                  class="stat-bar-fill stat-bar-fill--hp"
+                  id="sidebar-hp-fill"
+                  style="width: 100%"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Gold & Streak -->
+            <div class="profile-counters">
+              <div class="counter counter--gold" aria-label="Gold">
+                <span class="counter-icon" aria-hidden="true">🪙</span>
+                <span class="counter-value" id="sidebar-gold">0</span>
+              </div>
+              <div class="counter counter--streak" aria-label="Current streak">
+                <span class="counter-icon" aria-hidden="true">🔥</span>
+                <span class="counter-value" id="sidebar-streak">0</span>
+                <span class="counter-label">day streak</span>
+              </div>
+            </div>
+
+            <!-- Pet Display -->
+            <div
+              class="profile-pet"
+              id="sidebar-pet"
+              hidden
+              aria-label="Your pet"
+            >
+              <span
+                class="pet-icon"
+                id="sidebar-pet-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="pet-name" id="sidebar-pet-name"></span>
+            </div>
+          </section>
+
+          <!-- Quick Add Task -->
+          <button
+            type="button"
+            id="quick-add-btn"
+            class="btn btn--primary btn--block sidebar-quick-add"
+            aria-label="Quick add task"
+          >
+            <span aria-hidden="true">+</span> Quick Add Task
+          </button>
+
+          <!-- Main Navigation -->
+          <nav class="sidebar-nav" aria-label="Main views">
+            <ul class="nav-list" role="list">
+              <li class="nav-item">
+                <button
+                  type="button"
+                  class="nav-link active"
+                  data-view="inbox"
+                  aria-current="page"
+                >
+                  <span class="nav-icon" aria-hidden="true">📥</span>
+                  <span class="nav-text">Inbox</span>
+                  <span class="nav-badge" id="nav-badge-inbox" hidden>0</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="today">
+                  <span class="nav-icon" aria-hidden="true">☀️</span>
+                  <span class="nav-text">Today</span>
+                  <span class="nav-badge" id="nav-badge-today" hidden>0</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="upcoming">
+                  <span class="nav-icon" aria-hidden="true">📅</span>
+                  <span class="nav-text">Upcoming</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="projects">
+                  <span class="nav-icon" aria-hidden="true">📁</span>
+                  <span class="nav-text">Projects</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="habits">
+                  <span class="nav-icon" aria-hidden="true">🔄</span>
+                  <span class="nav-text">Habits</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="focus">
+                  <span class="nav-icon" aria-hidden="true">🎯</span>
+                  <span class="nav-text">Focus Timer</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="calendar">
+                  <span class="nav-icon" aria-hidden="true">🗓️</span>
+                  <span class="nav-text">Calendar</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="statistics">
+                  <span class="nav-icon" aria-hidden="true">📊</span>
+                  <span class="nav-text">Statistics</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="achievements">
+                  <span class="nav-icon" aria-hidden="true">🏆</span>
+                  <span class="nav-text">Achievements</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="rewards">
+                  <span class="nav-icon" aria-hidden="true">🎁</span>
+                  <span class="nav-text">Rewards</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="nav-link" data-view="settings">
+                  <span class="nav-icon" aria-hidden="true">⚙️</span>
+                  <span class="nav-text">Settings</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Projects List (Collapsible) -->
+          <section class="sidebar-section" aria-label="Projects">
+            <button
+              type="button"
+              class="sidebar-section-toggle"
+              aria-expanded="true"
+              data-toggle="projects-list"
+            >
+              <span class="sidebar-section-title">Projects</span>
+              <span class="sidebar-section-arrow" aria-hidden="true">▾</span>
+              <button
+                type="button"
+                class="sidebar-section-add"
+                id="sidebar-add-project-btn"
+                aria-label="Add new project"
+                title="Add project"
+              >
+                +
+              </button>
+            </button>
+            <ul
+              class="sidebar-projects-list"
+              id="sidebar-projects-list"
+              role="list"
+            >
+              <!-- Dynamically populated -->
+            </ul>
+            <p class="sidebar-empty" id="sidebar-projects-empty">
+              No projects yet
+            </p>
+          </section>
+
+          <!-- Tags Section (Change 7: Renamed from Areas, fully dynamic) -->
+          <section class="sidebar-section" aria-label="Tags">
+            <button
+              type="button"
+              class="sidebar-section-toggle"
+              aria-expanded="true"
+              data-toggle="tags-list"
+            >
+              <span class="sidebar-section-title">Tags</span>
+              <span class="sidebar-section-arrow" aria-hidden="true">▾</span>
+              <button
+                type="button"
+                class="sidebar-section-add"
+                id="sidebar-add-tag-btn"
+                aria-label="Add new tag"
+                title="Manage tags"
+              >
+                +
+              </button>
+            </button>
+            <ul class="sidebar-tags-list" id="sidebar-tags-list" role="list">
+              <!-- Dynamically populated from localStorage -->
+            </ul>
+            <p class="sidebar-empty" id="sidebar-tags-empty">No tags yet</p>
+          </section>
+
+          <!-- Theme Toggle -->
+          <div class="sidebar-footer">
+            <button
+              type="button"
+              id="theme-toggle-btn"
+              class="theme-toggle"
+              aria-label="Toggle dark/light theme"
+            >
+              <span
+                class="theme-toggle-icon theme-toggle-icon--dark"
+                aria-hidden="true"
+                >🌙</span
+              >
+              <span
+                class="theme-toggle-icon theme-toggle-icon--light"
+                aria-hidden="true"
+                >☀️</span
+              >
+              <span class="theme-toggle-slider" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ========== MOBILE SIDEBAR OVERLAY ========== -->
+      <div
+        id="sidebar-overlay"
+        class="sidebar-overlay"
+        hidden
+        aria-hidden="true"
+      ></div>
+
+      <!-- ========== MOBILE BOTTOM NAV ========== -->
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
+        <button
+          type="button"
+          class="mobile-nav-btn active"
+          data-view="inbox"
+          aria-label="Inbox"
+        >
+          <span class="mobile-nav-icon" aria-hidden="true">📥</span>
+          <span class="mobile-nav-label">Inbox</span>
+        </button>
+        <button
+          type="button"
+          class="mobile-nav-btn"
+          data-view="today"
+          aria-label="Today"
+        >
+          <span class="mobile-nav-icon" aria-hidden="true">☀️</span>
+          <span class="mobile-nav-label">Today</span>
+        </button>
+        <button
+          type="button"
+          class="mobile-nav-btn mobile-nav-btn--add"
+          id="mobile-quick-add-btn"
+          aria-label="Quick add task"
+        >
+          <span class="mobile-nav-icon" aria-hidden="true">+</span>
+        </button>
+        <button
+          type="button"
+          class="mobile-nav-btn"
+          data-view="habits"
+          aria-label="Habits"
+        >
+          <span class="mobile-nav-icon" aria-hidden="true">🔄</span>
+          <span class="mobile-nav-label">Habits</span>
+        </button>
+        <button
+          type="button"
+          class="mobile-nav-btn"
+          data-view="focus"
+          aria-label="Focus"
+        >
+          <span class="mobile-nav-icon" aria-hidden="true">🎯</span>
+          <span class="mobile-nav-label">Focus</span>
+        </button>
+      </nav>
+
+      <!-- ========== MAIN CONTENT ========== -->
+      <main id="main-content" class="main-content" role="main">
+        <!-- Top Bar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <button
+              type="button"
+              id="mobile-menu-btn"
+              class="mobile-menu-btn"
+              aria-label="Open menu"
+            >
+              <span aria-hidden="true">☰</span>
+            </button>
+            <div class="topbar-title-wrap">
+              <span class="topbar-icon" id="topbar-icon" aria-hidden="true"
+                >📥</span
+              >
+              <h2 class="topbar-title" id="topbar-title">Inbox</h2>
+            </div>
+          </div>
+
+          <div class="topbar-center">
+            <div class="search-container" role="search">
+              <label for="global-search" class="sr-only">Search tasks</label>
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input
+                type="search"
+                id="global-search"
+                class="search-input"
+                placeholder="Search tasks, projects, notes…"
+                autocomplete="off"
+              />
+              <kbd class="search-shortcut" aria-hidden="true">/</kbd>
+              <button
+                type="button"
+                id="search-clear-btn"
+                class="search-clear"
+                aria-label="Clear search"
+                hidden
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+
+          <!-- Change 11: Fixed topbar right buttons with proper structure -->
+          <div class="topbar-right">
+            <div class="view-switcher" role="group" aria-label="View mode">
+              <button
+                type="button"
+                class="view-switch-btn active"
+                data-viewmode="list"
+                aria-label="List view"
+                aria-pressed="true"
+              >
+                <span aria-hidden="true">☰</span>
+              </button>
+              <button
+                type="button"
+                class="view-switch-btn"
+                data-viewmode="board"
+                aria-label="Board view"
+                aria-pressed="false"
+              >
+                <span aria-hidden="true">▦</span>
+              </button>
+              <button
+                type="button"
+                class="view-switch-btn"
+                data-viewmode="calendar"
+                aria-label="Calendar view"
+                aria-pressed="false"
+              >
+                <span aria-hidden="true">📅</span>
+              </button>
+            </div>
+
+            <button
+              type="button"
+              id="sort-btn"
+              class="topbar-action-btn"
+              aria-label="Sort tasks"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <span aria-hidden="true">⇅</span>
+              <span class="btn-label">Sort</span>
+            </button>
+            <button
+              type="button"
+              id="filter-btn"
+              class="topbar-action-btn"
+              aria-label="Filter tasks"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <span aria-hidden="true">⊜</span>
+              <span class="btn-label">Filter</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Sort Dropdown -->
+        <div
+          id="sort-dropdown"
+          class="dropdown-menu"
+          role="menu"
+          aria-label="Sort options"
+          hidden
+        >
+          <button
+            type="button"
+            class="dropdown-item active"
+            role="menuitem"
+            data-sort="default"
+          >
+            <span aria-hidden="true">↕️</span> Default
+          </button>
+          <button
+            type="button"
+            class="dropdown-item"
+            role="menuitem"
+            data-sort="priority"
+          >
+            <span aria-hidden="true">🔴</span> Priority
+          </button>
+          <button
+            type="button"
+            class="dropdown-item"
+            role="menuitem"
+            data-sort="due-date"
+          >
+            <span aria-hidden="true">📅</span> Due Date
+          </button>
+          <button
+            type="button"
+            class="dropdown-item"
+            role="menuitem"
+            data-sort="title"
+          >
+            <span aria-hidden="true">🔤</span> Title (A–Z)
+          </button>
+          <button
+            type="button"
+            class="dropdown-item"
+            role="menuitem"
+            data-sort="difficulty"
+          >
+            <span aria-hidden="true">💪</span> Difficulty
+          </button>
+        </div>
+
+        <!-- Filter Dropdown (Change 5: Completed filter enabled by default) -->
+        <div
+          id="filter-dropdown"
+          class="dropdown-menu dropdown-menu--filter"
+          role="menu"
+          aria-label="Filter options"
+          hidden
+        >
+          <div class="dropdown-section">
+            <h3 class="dropdown-section-title">Status</h3>
+            <label class="dropdown-check">
+              <input type="checkbox" value="pending" checked /> Pending
+            </label>
+            <label class="dropdown-check">
+              <input type="checkbox" value="completed" checked /> Completed
+            </label>
+            <label class="dropdown-check">
+              <input type="checkbox" value="overdue" checked /> Overdue
+            </label>
+          </div>
+          <div class="dropdown-section">
+            <h3 class="dropdown-section-title">Priority</h3>
+            <label class="dropdown-check">
+              <input type="checkbox" value="p1" checked /> P1 — Urgent
+            </label>
+            <label class="dropdown-check">
+              <input type="checkbox" value="p2" checked /> P2 — High
+            </label>
+            <label class="dropdown-check">
+              <input type="checkbox" value="p3" checked /> P3 — Medium
+            </label>
+            <label class="dropdown-check">
+              <input type="checkbox" value="p4" checked /> P4 — Low
+            </label>
+          </div>
+          <div class="dropdown-section">
+            <h3 class="dropdown-section-title">Project</h3>
+            <div id="filter-projects-list">
+              <label class="dropdown-check">
+                <input type="checkbox" value="all" checked /> All Projects
+              </label>
+            </div>
+          </div>
+          <!-- Change 7: Tag filters -->
+          <div class="dropdown-section">
+            <h3 class="dropdown-section-title">Tags</h3>
+            <div id="filter-tags-list">
+              <label class="dropdown-check">
+                <input type="checkbox" value="all" checked /> All Tags
+              </label>
+            </div>
+          </div>
+          <div class="dropdown-actions">
+            <button
+              type="button"
+              class="btn btn--ghost btn--sm"
+              id="filter-reset-btn"
+            >
+              Reset
+            </button>
+            <button
+              type="button"
+              class="btn btn--primary btn--sm"
+              id="filter-apply-btn"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Results Overlay -->
+        <div id="search-results" class="search-results" hidden>
+          <div class="search-results-header">
+            <h3 class="search-results-title">Search Results</h3>
+            <span class="search-results-count" id="search-results-count"
+              >0 results</span
+            >
+          </div>
+          <ul
+            class="search-results-list"
+            id="search-results-list"
+            role="listbox"
+          >
+            <!-- Dynamically populated -->
+          </ul>
+          <div class="search-results-empty" id="search-results-empty" hidden>
+            <span aria-hidden="true">🔍</span>
+            <p>No results found. Try a different search term.</p>
+          </div>
+        </div>
+
+        <!-- ==================== DYNAMIC CONTENT VIEWS ==================== -->
+        <div class="content-area" id="content-area">
+          <!-- ===== INBOX VIEW ===== -->
+          <section
+            id="view-inbox"
+            class="view"
+            data-view="inbox"
+            aria-label="Inbox"
+          >
+            <div class="view-header">
+              <h2 class="view-title">Inbox</h2>
+              <span class="task-count" id="inbox-task-count">0 tasks</span>
+            </div>
+
+            <div class="task-list-container">
+              <ul
+                class="task-list"
+                id="inbox-task-list"
+                role="list"
+                aria-label="Inbox tasks"
+              >
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="inbox-empty" hidden>
+              <div class="empty-state-illustration" aria-hidden="true">📥</div>
+              <h3 class="empty-state-title">Your inbox is empty</h3>
+              <p class="empty-state-description">
+                Capture tasks quickly and organize them later.
+              </p>
+              <button
+                type="button"
+                class="btn btn--primary empty-state-action"
+                data-action="quick-add"
+              >
+                <span aria-hidden="true">+</span> Add a Task
+              </button>
+            </div>
+
+            <!-- Completed Tasks (collapsible) -->
+            <div class="completed-section" id="inbox-completed-section" hidden>
+              <button
+                type="button"
+                class="completed-toggle"
+                aria-expanded="false"
+                data-toggle="inbox-completed-list"
+              >
+                <span class="completed-toggle-arrow" aria-hidden="true">▸</span>
+                <span>Completed</span>
+                <span class="completed-count" id="inbox-completed-count"
+                  >0</span
+                >
+              </button>
+              <ul
+                class="task-list task-list--completed"
+                id="inbox-completed-list"
+                role="list"
+                hidden
+              >
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+          </section>
+
+          <!-- ===== TODAY VIEW ===== -->
+          <section
+            id="view-today"
+            class="view"
+            data-view="today"
+            aria-label="Today"
+            hidden
+          >
+            <!-- Greeting -->
+            <div class="today-header">
+              <div class="today-greeting">
+                <h2 class="today-greeting-text" id="today-greeting">
+                  Good morning,
+                </h2>
+                <span class="today-greeting-name" id="today-greeting-name"
+                  >Adventurer</span
+                >
+              </div>
+              <div class="today-meta">
+                <time class="today-date" id="today-date"></time>
+                <div class="today-streak" id="today-streak-display">
+                  <span aria-hidden="true">🔥</span>
+                  <span id="today-streak-count">0</span> day streak
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress Ring -->
+            <div class="today-progress" aria-label="Today's progress">
+              <svg
+                class="progress-ring"
+                viewBox="0 0 120 120"
+                width="120"
+                height="120"
+                role="img"
+                aria-label="Task completion progress"
+              >
+                <circle class="progress-ring-bg" cx="60" cy="60" r="52" />
+                <circle
+                  class="progress-ring-fill"
+                  id="today-progress-ring"
+                  cx="60"
+                  cy="60"
+                  r="52"
+                  stroke-dasharray="326.73"
+                  stroke-dashoffset="326.73"
+                />
+              </svg>
+              <div class="progress-ring-text">
+                <span class="progress-ring-value" id="today-progress-value"
+                  >0</span
+                >
+                <span class="progress-ring-label">done</span>
+              </div>
+            </div>
+
+            <!-- Motivational Quote -->
+            <blockquote class="today-quote glass-card" id="today-quote">
+              <p class="quote-text" id="quote-text">
+                The secret of getting ahead is getting started.
+              </p>
+              <cite class="quote-author" id="quote-author">— Mark Twain</cite>
+            </blockquote>
+
+            <!-- Change 12: Smart Suggestions section REMOVED -->
+
+            <!-- Time-based Sections -->
+            <div class="today-sections">
+              <!-- Morning -->
+              <div class="today-section" data-period="morning">
+                <h3 class="today-section-title">
+                  <span aria-hidden="true">🌅</span> Morning
+                </h3>
+                <ul
+                  class="task-list"
+                  id="today-morning-list"
+                  role="list"
+                  aria-label="Morning tasks"
+                >
+                  <!-- Dynamically populated -->
+                </ul>
+                <div
+                  class="today-section-empty"
+                  id="today-morning-empty"
+                  hidden
+                >
+                  <p>No morning tasks</p>
+                </div>
+              </div>
+
+              <!-- Afternoon -->
+              <div class="today-section" data-period="afternoon">
+                <h3 class="today-section-title">
+                  <span aria-hidden="true">☀️</span> Afternoon
+                </h3>
+                <ul
+                  class="task-list"
+                  id="today-afternoon-list"
+                  role="list"
+                  aria-label="Afternoon tasks"
+                >
+                  <!-- Dynamically populated -->
+                </ul>
+                <div
+                  class="today-section-empty"
+                  id="today-afternoon-empty"
+                  hidden
+                >
+                  <p>No afternoon tasks</p>
+                </div>
+              </div>
+
+              <!-- Evening -->
+              <div class="today-section" data-period="evening">
+                <h3 class="today-section-title">
+                  <span aria-hidden="true">🌙</span> Evening
+                </h3>
+                <ul
+                  class="task-list"
+                  id="today-evening-list"
+                  role="list"
+                  aria-label="Evening tasks"
+                >
+                  <!-- Dynamically populated -->
+                </ul>
+                <div
+                  class="today-section-empty"
+                  id="today-evening-empty"
+                  hidden
+                >
+                  <p>No evening tasks</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Today Completed -->
+            <div class="completed-section" id="today-completed-section" hidden>
+              <button
+                type="button"
+                class="completed-toggle"
+                aria-expanded="false"
+                data-toggle="today-completed-list"
+              >
+                <span class="completed-toggle-arrow" aria-hidden="true">▸</span>
+                <span>Completed Today</span>
+                <span class="completed-count" id="today-completed-count"
+                  >0</span
+                >
+              </button>
+              <ul
+                class="task-list task-list--completed"
+                id="today-completed-list"
+                role="list"
+                hidden
+              >
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+          </section>
+
+          <!-- ===== UPCOMING VIEW ===== -->
+          <section
+            id="view-upcoming"
+            class="view"
+            data-view="upcoming"
+            aria-label="Upcoming"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Upcoming</h2>
+            </div>
+
+            <!-- Overdue Section -->
+            <div class="upcoming-group" id="upcoming-overdue-group" hidden>
+              <h3 class="upcoming-group-title upcoming-group-title--overdue">
+                <span aria-hidden="true">⚠️</span> Overdue
+              </h3>
+              <ul
+                class="task-list"
+                id="upcoming-overdue-list"
+                role="list"
+                aria-label="Overdue tasks"
+              >
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <!-- Date Groups Container -->
+            <div id="upcoming-groups-container">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- No Due Date Group -->
+            <div class="upcoming-group" id="upcoming-no-date-group" hidden>
+              <h3 class="upcoming-group-title upcoming-group-title--nodate">
+                <span aria-hidden="true">📌</span> No Due Date
+              </h3>
+              <ul
+                class="task-list"
+                id="upcoming-no-date-list"
+                role="list"
+                aria-label="Tasks without due date"
+              >
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="upcoming-empty" hidden>
+              <div class="empty-state-illustration" aria-hidden="true">📅</div>
+              <h3 class="empty-state-title">No upcoming tasks</h3>
+              <p class="empty-state-description">
+                Tasks with due dates will appear here.
+              </p>
+              <button
+                type="button"
+                class="btn btn--primary empty-state-action"
+                data-action="quick-add"
+              >
+                <span aria-hidden="true">+</span> Add a Task
+              </button>
+            </div>
+          </section>
+
+          <!-- ===== PROJECTS VIEW ===== -->
+          <section
+            id="view-projects"
+            class="view"
+            data-view="projects"
+            aria-label="Projects"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Projects</h2>
+              <button
+                type="button"
+                class="btn btn--primary btn--sm"
+                id="add-project-btn"
+              >
+                <span aria-hidden="true">+</span> New Project
+              </button>
+            </div>
+
+            <div class="projects-grid" id="projects-grid" role="list">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div class="empty-state" id="projects-empty" hidden>
+              <div class="empty-state-illustration" aria-hidden="true">📁</div>
+              <h3 class="empty-state-title">No projects yet</h3>
+              <p class="empty-state-description">
+                Organize your tasks into projects for better focus.
+              </p>
+              <button
+                type="button"
+                class="btn btn--primary empty-state-action"
+                id="projects-empty-add-btn"
+              >
+                <span aria-hidden="true">+</span> Create Your First Project
+              </button>
+            </div>
+          </section>
+
+          <!-- ===== SINGLE PROJECT VIEW ===== -->
+          <section
+            id="view-project-detail"
+            class="view"
+            data-view="project-detail"
+            aria-label="Project detail"
+            hidden
+          >
+            <div class="view-header">
+              <button
+                type="button"
+                class="btn btn--ghost btn--sm"
+                id="project-back-btn"
+                aria-label="Back to projects"
+              >
+                <span aria-hidden="true">←</span> Projects
+              </button>
+              <div class="project-detail-header">
+                <span
+                  class="project-detail-emoji"
+                  id="project-detail-emoji"
+                  aria-hidden="true"
+                ></span>
+                <h2 class="view-title" id="project-detail-title"></h2>
+                <div class="project-detail-actions">
+                  <button
+                    type="button"
+                    class="btn btn--ghost btn--icon"
+                    id="project-edit-btn"
+                    aria-label="Edit project"
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn--ghost btn--icon btn--danger"
+                    id="project-delete-btn"
+                    aria-label="Delete project"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="project-progress glass-card"
+              aria-label="Project progress"
+            >
+              <div class="project-progress-info">
+                <span id="project-detail-progress-text"
+                  >0 of 0 tasks completed</span
+                >
+                <span
+                  id="project-detail-due-date"
+                  class="project-detail-due"
+                ></span>
+              </div>
+              <div
+                class="progress-bar"
+                role="progressbar"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                id="project-detail-progress-bar-container"
+              >
+                <div
+                  class="progress-bar-fill"
+                  id="project-detail-progress-fill"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div class="task-list-container">
+              <ul class="task-list" id="project-detail-task-list" role="list">
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn--ghost add-task-inline"
+              id="project-detail-add-task-btn"
+            >
+              <span aria-hidden="true">+</span> Add Task
+            </button>
+
+            <div
+              class="completed-section"
+              id="project-detail-completed-section"
+              hidden
+            >
+              <button
+                type="button"
+                class="completed-toggle"
+                aria-expanded="false"
+                data-toggle="project-detail-completed-list"
+              >
+                <span class="completed-toggle-arrow" aria-hidden="true">▸</span>
+                <span>Completed</span>
+                <span
+                  class="completed-count"
+                  id="project-detail-completed-count"
+                  >0</span
+                >
+              </button>
+              <ul
+                class="task-list task-list--completed"
+                id="project-detail-completed-list"
+                role="list"
+                hidden
+              >
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <div class="empty-state" id="project-detail-empty" hidden>
+              <div class="empty-state-illustration" aria-hidden="true">📋</div>
+              <h3 class="empty-state-title">No tasks in this project</h3>
+              <p class="empty-state-description">
+                Add tasks to start making progress.
+              </p>
+            </div>
+          </section>
+
+          <!-- ===== HABITS VIEW (Change 10: Added frequency field) ===== -->
+          <section
+            id="view-habits"
+            class="view"
+            data-view="habits"
+            aria-label="Habits"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Habit Tracker</h2>
+              <button
+                type="button"
+                class="btn btn--primary btn--sm"
+                id="add-habit-btn"
+              >
+                <span aria-hidden="true">+</span> New Habit
+              </button>
+            </div>
+
+            <div class="habits-list" id="habits-list" role="list">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div
+              class="habit-calendar glass-card"
+              id="habit-calendar-section"
+              hidden
+            >
+              <div class="habit-calendar-header">
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--icon"
+                  id="habit-cal-prev"
+                  aria-label="Previous month"
+                >
+                  ←
+                </button>
+                <h3 class="habit-calendar-month" id="habit-calendar-month"></h3>
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--icon"
+                  id="habit-cal-next"
+                  aria-label="Next month"
+                >
+                  →
+                </button>
+              </div>
+              <div class="habit-calendar-grid" id="habit-calendar-grid">
+                <div class="habit-calendar-day-header">Mo</div>
+                <div class="habit-calendar-day-header">Tu</div>
+                <div class="habit-calendar-day-header">We</div>
+                <div class="habit-calendar-day-header">Th</div>
+                <div class="habit-calendar-day-header">Fr</div>
+                <div class="habit-calendar-day-header">Sa</div>
+                <div class="habit-calendar-day-header">Su</div>
+                <!-- Day cells dynamically populated -->
+              </div>
+            </div>
+
+            <div class="empty-state" id="habits-empty" hidden>
+              <div class="empty-state-illustration" aria-hidden="true">🔄</div>
+              <h3 class="empty-state-title">No habits yet</h3>
+              <p class="empty-state-description">
+                Build positive routines by tracking daily habits.
+              </p>
+              <button
+                type="button"
+                class="btn btn--primary empty-state-action"
+                id="habits-empty-add-btn"
+              >
+                <span aria-hidden="true">+</span> Add Your First Habit
+              </button>
+            </div>
+          </section>
+
+          <!-- ===== FOCUS TIMER VIEW ===== -->
+          <section
+            id="view-focus"
+            class="view"
+            data-view="focus"
+            aria-label="Focus Timer"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Focus Timer</h2>
+            </div>
+
+            <div class="focus-container">
+              <div class="focus-timer-wrap">
+                <svg
+                  class="focus-ring"
+                  viewBox="0 0 260 260"
+                  width="260"
+                  height="260"
+                  role="img"
+                  aria-label="Focus timer"
+                >
+                  <circle class="focus-ring-bg" cx="130" cy="130" r="120" />
+                  <circle
+                    class="focus-ring-fill"
+                    id="focus-ring-fill"
+                    cx="130"
+                    cy="130"
+                    r="120"
+                    stroke-dasharray="753.98"
+                    stroke-dashoffset="0"
+                  />
+                </svg>
+                <div class="focus-timer-display">
+                  <span
+                    class="focus-timer-time"
+                    id="focus-timer-time"
+                    aria-live="polite"
+                    >25:00</span
+                  >
+                  <span class="focus-timer-label" id="focus-timer-label"
+                    >Focus</span
+                  >
+                </div>
+              </div>
+
+              <div class="focus-controls">
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--icon focus-control-btn"
+                  id="focus-reset-btn"
+                  aria-label="Reset timer"
+                >
+                  <span aria-hidden="true">⟲</span>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn--primary btn--lg focus-control-btn focus-start-btn"
+                  id="focus-start-btn"
+                  aria-label="Start timer"
+                >
+                  <span aria-hidden="true">▶</span>
+                  <span class="btn-label">Start</span>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--icon focus-control-btn"
+                  id="focus-skip-btn"
+                  aria-label="Skip to next session"
+                >
+                  <span aria-hidden="true">⏭</span>
+                </button>
+              </div>
+
+              <div class="focus-settings glass-card">
+                <div class="focus-setting">
+                  <label for="focus-work-duration" class="form-label"
+                    >Focus Duration</label
+                  >
+                  <div class="focus-setting-control">
+                    <button
+                      type="button"
+                      class="btn btn--ghost btn--icon"
+                      data-adjust="focus-work"
+                      data-dir="-1"
+                      aria-label="Decrease focus duration"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      id="focus-work-duration"
+                      class="focus-duration-input"
+                      value="25"
+                      min="1"
+                      max="120"
+                      aria-label="Focus minutes"
+                    />
+                    <span class="focus-duration-unit">min</span>
+                    <button
+                      type="button"
+                      class="btn btn--ghost btn--icon"
+                      data-adjust="focus-work"
+                      data-dir="1"
+                      aria-label="Increase focus duration"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div class="focus-setting">
+                  <label for="focus-break-duration" class="form-label"
+                    >Break Duration</label
+                  >
+                  <div class="focus-setting-control">
+                    <button
+                      type="button"
+                      class="btn btn--ghost btn--icon"
+                      data-adjust="focus-break"
+                      data-dir="-1"
+                      aria-label="Decrease break duration"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      id="focus-break-duration"
+                      class="focus-duration-input"
+                      value="5"
+                      min="1"
+                      max="30"
+                      aria-label="Break minutes"
+                    />
+                    <span class="focus-duration-unit">min</span>
+                    <button
+                      type="button"
+                      class="btn btn--ghost btn--icon"
+                      data-adjust="focus-break"
+                      data-dir="1"
+                      aria-label="Increase break duration"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="focus-sessions glass-card">
+                <h3 class="focus-sessions-title">Sessions Today</h3>
+                <div
+                  class="focus-sessions-dots"
+                  id="focus-sessions-dots"
+                  aria-label="Completed sessions today"
+                >
+                  <!-- Dynamically populated -->
+                </div>
+                <p class="focus-sessions-count">
+                  <span id="focus-sessions-count">0</span> sessions •
+                  <span id="focus-total-time">0m</span> focused
+                </p>
+              </div>
+
+              <div class="focus-task-link glass-card">
+                <h3 class="focus-task-link-title">Working on</h3>
+                <select
+                  id="focus-task-select"
+                  class="form-select"
+                  aria-label="Select task to focus on"
+                >
+                  <option value="">— No task selected —</option>
+                  <!-- Dynamically populated -->
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== CALENDAR VIEW (Change 10: Merged with habits + heatmap) ===== -->
+          <section
+            id="view-calendar"
+            class="view"
+            data-view="calendar"
+            aria-label="Calendar"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Calendar</h2>
+            </div>
+
+            <div class="calendar-container">
+              <div class="calendar-header">
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--icon"
+                  id="calendar-prev-month"
+                  aria-label="Previous month"
+                >
+                  ←
+                </button>
+                <h3
+                  class="calendar-current-month"
+                  id="calendar-current-month"
+                ></h3>
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--icon"
+                  id="calendar-next-month"
+                  aria-label="Next month"
+                >
+                  →
+                </button>
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--sm"
+                  id="calendar-today-btn"
+                >
+                  Today
+                </button>
+              </div>
+
+              <div
+                class="calendar-view-toggle"
+                role="group"
+                aria-label="Calendar view toggle"
+              >
+                <button
+                  type="button"
+                  class="calendar-view-btn active"
+                  data-calview="month"
+                  aria-pressed="true"
+                >
+                  Month
+                </button>
+                <button
+                  type="button"
+                  class="calendar-view-btn"
+                  data-calview="week"
+                  aria-pressed="false"
+                >
+                  Week
+                </button>
+                <button
+                  type="button"
+                  class="calendar-view-btn"
+                  data-calview="day"
+                  aria-pressed="false"
+                >
+                  Day
+                </button>
+              </div>
+
+              <div
+                class="calendar-grid calendar-grid--header"
+                aria-hidden="true"
+              >
+                <div class="calendar-day-header">Mon</div>
+                <div class="calendar-day-header">Tue</div>
+                <div class="calendar-day-header">Wed</div>
+                <div class="calendar-day-header">Thu</div>
+                <div class="calendar-day-header">Fri</div>
+                <div class="calendar-day-header">Sat</div>
+                <div class="calendar-day-header">Sun</div>
+              </div>
+
+              <div
+                class="calendar-grid calendar-grid--body"
+                id="calendar-grid"
+                role="grid"
+                aria-label="Calendar month view"
+              >
+                <!-- 42 date cells dynamically populated with heatmap classes -->
+              </div>
+
+              <!-- Change 10: Heatmap legend -->
+              <div class="calendar-heatmap-legend" id="calendar-heatmap-legend">
+                <span>Less</span>
+                <span class="heatmap-legend-block hl-0"></span>
+                <span class="heatmap-legend-block hl-1"></span>
+                <span class="heatmap-legend-block hl-2"></span>
+                <span class="heatmap-legend-block hl-3"></span>
+                <span class="heatmap-legend-block hl-4"></span>
+                <span>More</span>
+              </div>
+
+              <div class="calendar-week-view" id="calendar-week-view" hidden>
+                <!-- Dynamically populated -->
+              </div>
+
+              <div class="calendar-day-view" id="calendar-day-view" hidden>
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Calendar Day Detail Panel -->
+            <div
+              class="calendar-day-panel glass-card"
+              id="calendar-day-panel"
+              hidden
+            >
+              <div class="calendar-day-panel-header">
+                <h3 id="calendar-day-panel-title"></h3>
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--icon"
+                  id="calendar-day-panel-close"
+                  aria-label="Close day panel"
+                >
+                  ✕
+                </button>
+              </div>
+              <ul class="task-list" id="calendar-day-panel-tasks" role="list">
+                <!-- Dynamically populated: tasks AND habits for this date -->
+              </ul>
+              <div
+                class="calendar-day-panel-empty"
+                id="calendar-day-panel-empty"
+                hidden
+              >
+                <p>No tasks on this day</p>
+              </div>
+              <button
+                type="button"
+                class="btn btn--ghost add-task-inline"
+                id="calendar-day-panel-add-btn"
+              >
+                <span aria-hidden="true">+</span> Add Task
+              </button>
+            </div>
+          </section>
+
+          <!-- ===== STATISTICS VIEW ===== -->
+          <section
+            id="view-statistics"
+            class="view"
+            data-view="statistics"
+            aria-label="Statistics"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Statistics</h2>
+            </div>
+
+            <div class="stats-overview">
+              <div class="stat-card glass-card">
+                <span class="stat-card-icon" aria-hidden="true">✅</span>
+                <div class="stat-card-content">
+                  <span class="stat-card-value" id="stat-tasks-today">0</span>
+                  <span class="stat-card-label">Tasks Today</span>
+                </div>
+              </div>
+              <div class="stat-card glass-card">
+                <span class="stat-card-icon" aria-hidden="true">📋</span>
+                <div class="stat-card-content">
+                  <span class="stat-card-value" id="stat-tasks-week">0</span>
+                  <span class="stat-card-label">Tasks This Week</span>
+                </div>
+              </div>
+              <div class="stat-card glass-card">
+                <span class="stat-card-icon" aria-hidden="true">🔥</span>
+                <div class="stat-card-content">
+                  <span class="stat-card-value" id="stat-current-streak"
+                    >0</span
+                  >
+                  <span class="stat-card-label">Day Streak</span>
+                </div>
+              </div>
+              <div class="stat-card glass-card">
+                <span class="stat-card-icon" aria-hidden="true">🎯</span>
+                <div class="stat-card-content">
+                  <span class="stat-card-value" id="stat-focus-time">0m</span>
+                  <span class="stat-card-label">Focus Time</span>
+                </div>
+              </div>
+              <div class="stat-card glass-card">
+                <span class="stat-card-icon" aria-hidden="true">⭐</span>
+                <div class="stat-card-content">
+                  <span class="stat-card-value" id="stat-total-xp">0</span>
+                  <span class="stat-card-label">Total XP</span>
+                </div>
+              </div>
+              <div class="stat-card glass-card">
+                <span class="stat-card-icon" aria-hidden="true">🪙</span>
+                <div class="stat-card-content">
+                  <span class="stat-card-value" id="stat-total-gold">0</span>
+                  <span class="stat-card-label">Gold Earned</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-section glass-card">
+              <h3 class="chart-title">Tasks Completed (Last 7 Days)</h3>
+              <div
+                class="bar-chart"
+                id="stats-bar-chart"
+                role="img"
+                aria-label="Bar chart showing tasks completed per day"
+              >
+                <div class="bar-chart-bars" id="stats-bar-chart-bars"></div>
+                <div class="bar-chart-labels" id="stats-bar-chart-labels"></div>
+              </div>
+            </div>
+
+            <div class="chart-section glass-card">
+              <h3 class="chart-title">Task Status Overview</h3>
+              <div class="donut-chart-container">
+                <svg
+                  class="donut-chart"
+                  viewBox="0 0 160 160"
+                  width="160"
+                  height="160"
+                  role="img"
+                  aria-label="Donut chart"
+                >
+                  <circle
+                    class="donut-segment donut-segment--pending"
+                    cx="80"
+                    cy="80"
+                    r="60"
+                    id="donut-pending"
+                  />
+                  <circle
+                    class="donut-segment donut-segment--completed"
+                    cx="80"
+                    cy="80"
+                    r="60"
+                    id="donut-completed"
+                  />
+                </svg>
+                <div class="donut-legend">
+                  <div class="donut-legend-item">
+                    <span
+                      class="donut-legend-dot donut-legend-dot--completed"
+                      aria-hidden="true"
+                    ></span>
+                    <span
+                      >Completed:
+                      <strong id="donut-completed-count">0</strong></span
+                    >
+                  </div>
+                  <div class="donut-legend-item">
+                    <span
+                      class="donut-legend-dot donut-legend-dot--pending"
+                      aria-hidden="true"
+                    ></span>
+                    <span
+                      >Pending:
+                      <strong id="donut-pending-count">0</strong></span
+                    >
+                  </div>
+                  <div class="donut-legend-item">
+                    <span
+                      class="donut-legend-dot donut-legend-dot--overdue"
+                      aria-hidden="true"
+                    ></span>
+                    <span
+                      >Overdue:
+                      <strong id="donut-overdue-count">0</strong></span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-section glass-card">
+              <h3 class="chart-title">Focus Time (Last 7 Days)</h3>
+              <div
+                class="bar-chart"
+                id="stats-focus-chart"
+                role="img"
+                aria-label="Bar chart showing focus time per day"
+              >
+                <div class="bar-chart-bars" id="stats-focus-chart-bars"></div>
+                <div
+                  class="bar-chart-labels"
+                  id="stats-focus-chart-labels"
+                ></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== ACHIEVEMENTS VIEW ===== -->
+          <section
+            id="view-achievements"
+            class="view"
+            data-view="achievements"
+            aria-label="Achievements"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Achievements</h2>
+            </div>
+
+            <div class="achievements-section">
+              <h3 class="achievements-category-title">
+                <span aria-hidden="true">✅</span> Task Milestones
+              </h3>
+              <div
+                class="achievements-grid"
+                id="achievements-tasks-grid"
+                role="list"
+              >
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="tasks-1"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🌱</span>
+                  <h4 class="achievement-name">First Step</h4>
+                  <p class="achievement-desc">Complete your first task</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="tasks-10"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🌿</span>
+                  <h4 class="achievement-name">Getting Started</h4>
+                  <p class="achievement-desc">Complete 10 tasks</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="tasks-50"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🌳</span>
+                  <h4 class="achievement-name">Productivity Pro</h4>
+                  <p class="achievement-desc">Complete 50 tasks</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="tasks-100"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🏔️</span>
+                  <h4 class="achievement-name">Centurion</h4>
+                  <p class="achievement-desc">Complete 100 tasks</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="achievements-section">
+              <h3 class="achievements-category-title">
+                <span aria-hidden="true">🔥</span> Streak Milestones
+              </h3>
+              <div
+                class="achievements-grid"
+                id="achievements-streaks-grid"
+                role="list"
+              >
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="streak-3"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🕯️</span>
+                  <h4 class="achievement-name">Spark</h4>
+                  <p class="achievement-desc">3-day streak</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="streak-7"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🔥</span>
+                  <h4 class="achievement-name">On Fire</h4>
+                  <p class="achievement-desc">7-day streak</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="streak-30"
+                >
+                  <span class="achievement-icon" aria-hidden="true">☄️</span>
+                  <h4 class="achievement-name">Unstoppable</h4>
+                  <p class="achievement-desc">30-day streak</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="achievements-section">
+              <h3 class="achievements-category-title">
+                <span aria-hidden="true">🎯</span> Focus Milestones
+              </h3>
+              <div
+                class="achievements-grid"
+                id="achievements-focus-grid"
+                role="list"
+              >
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="focus-1h"
+                >
+                  <span class="achievement-icon" aria-hidden="true">⏱️</span>
+                  <h4 class="achievement-name">Deep Work</h4>
+                  <p class="achievement-desc">1 hour of focus time</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="focus-10h"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🧘</span>
+                  <h4 class="achievement-name">Flow Master</h4>
+                  <p class="achievement-desc">10 hours of focus time</p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="achievements-section">
+              <h3 class="achievements-category-title">
+                <span aria-hidden="true">🐾</span> Pet Milestones
+              </h3>
+              <div
+                class="achievements-grid"
+                id="achievements-pets-grid"
+                role="list"
+              >
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="pet-level5"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🐣</span>
+                  <h4 class="achievement-name">Hatchling</h4>
+                  <p class="achievement-desc">
+                    Reach Level 5 — Unlock Chick pet
+                  </p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="pet-level10"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🐉</span>
+                  <h4 class="achievement-name">Dragon Tamer</h4>
+                  <p class="achievement-desc">
+                    Reach Level 10 — Unlock Dragon pet
+                  </p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+                <div
+                  class="achievement-card glass-card locked"
+                  role="listitem"
+                  data-achievement="pet-level20"
+                >
+                  <span class="achievement-icon" aria-hidden="true">🦊</span>
+                  <h4 class="achievement-name">Spirit Guide</h4>
+                  <p class="achievement-desc">
+                    Reach Level 20 — Unlock Fox pet
+                  </p>
+                  <span class="achievement-status" aria-label="Locked">🔒</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== REWARDS VIEW (Change 9: Customizable rewards with delete + emoji) ===== -->
+          <section
+            id="view-rewards"
+            class="view"
+            data-view="rewards"
+            aria-label="Rewards"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Rewards Shop</h2>
+              <div class="rewards-balance">
+                <span aria-hidden="true">🪙</span>
+                <span id="rewards-gold-balance">0</span> Gold
+              </div>
+            </div>
+
+            <div class="rewards-grid" id="rewards-grid" role="list">
+              <!-- Dynamically populated: default + custom rewards -->
+            </div>
+
+            <!-- Custom Reward Form (Change 9: added emoji) -->
+            <div class="custom-reward glass-card">
+              <h3 class="custom-reward-title">Create Custom Reward</h3>
+              <div class="custom-reward-form">
+                <div class="form-group">
+                  <label for="custom-reward-emoji" class="form-label"
+                    >Emoji</label
+                  >
+                  <input
+                    type="text"
+                    id="custom-reward-emoji"
+                    class="form-input form-input--emoji"
+                    placeholder="🎁"
+                    maxlength="2"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="custom-reward-name" class="form-label"
+                    >Reward Name</label
+                  >
+                  <input
+                    type="text"
+                    id="custom-reward-name"
+                    class="form-input"
+                    placeholder="e.g., New book"
+                    maxlength="50"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="custom-reward-cost" class="form-label"
+                    >Cost (Gold)</label
+                  >
+                  <input
+                    type="number"
+                    id="custom-reward-cost"
+                    class="form-input"
+                    placeholder="50"
+                    min="1"
+                    max="9999"
+                  />
+                </div>
+                <button
+                  type="button"
+                  class="btn btn--primary btn--sm"
+                  id="custom-reward-add-btn"
+                >
+                  Add Reward
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== SETTINGS VIEW (Changes 6, 7, 8 incorporated) ===== -->
+          <section
+            id="view-settings"
+            class="view"
+            data-view="settings"
+            aria-label="Settings"
+            hidden
+          >
+            <div class="view-header">
+              <h2 class="view-title">Settings</h2>
+            </div>
+
+            <div class="settings-sections">
+              <!-- Profile Settings -->
+              <div class="settings-section glass-card">
+                <h3 class="settings-section-title">
+                  <span aria-hidden="true">👤</span> Profile
+                </h3>
+                <div class="form-group">
+                  <label for="settings-name" class="form-label"
+                    >Display Name</label
+                  >
+                  <input
+                    type="text"
+                    id="settings-name"
+                    class="form-input"
+                    placeholder="Your name"
+                    maxlength="30"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="settings-avatar" class="form-label"
+                    >Avatar URL</label
+                  >
+                  <input
+                    type="url"
+                    id="settings-avatar"
+                    class="form-input"
+                    placeholder="https://example.com/avatar.png"
+                  />
+                </div>
+
+                <!-- Change 8: Character class change -->
+                <div class="form-group">
+                  <label class="form-label">Character Class</label>
+                  <div
+                    class="settings-class-selector"
+                    id="settings-class-selector"
+                    role="radiogroup"
+                    aria-label="Character class"
+                  >
+                    <button
+                      type="button"
+                      class="settings-class-option"
+                      data-class="warrior"
+                      role="radio"
+                      aria-checked="false"
+                    >
+                      <span
+                        class="settings-class-option-icon"
+                        aria-hidden="true"
+                        >⚔️</span
+                      >
+                      <span class="settings-class-option-name">Warrior</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="settings-class-option"
+                      data-class="mage"
+                      role="radio"
+                      aria-checked="false"
+                    >
+                      <span
+                        class="settings-class-option-icon"
+                        aria-hidden="true"
+                        >🔮</span
+                      >
+                      <span class="settings-class-option-name">Mage</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="settings-class-option"
+                      data-class="rogue"
+                      role="radio"
+                      aria-checked="false"
+                    >
+                      <span
+                        class="settings-class-option-icon"
+                        aria-hidden="true"
+                        >🗡️</span
+                      >
+                      <span class="settings-class-option-name">Rogue</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="settings-class-option"
+                      data-class="healer"
+                      role="radio"
+                      aria-checked="false"
+                    >
+                      <span
+                        class="settings-class-option-icon"
+                        aria-hidden="true"
+                        >🌿</span
+                      >
+                      <span class="settings-class-option-name">Healer</span>
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn btn--primary btn--sm"
+                  id="settings-save-profile-btn"
+                >
+                  Save Profile
+                </button>
+              </div>
+
+              <!-- Appearance Settings -->
+              <div class="settings-section glass-card">
+                <h3 class="settings-section-title">
+                  <span aria-hidden="true">🎨</span> Appearance
+                </h3>
+                <div class="form-group">
+                  <label class="form-label">Theme</label>
+                  <div class="settings-toggle-row">
+                    <span>Dark Mode</span>
+                    <button
+                      type="button"
+                      class="toggle-switch"
+                      id="settings-theme-toggle"
+                      role="switch"
+                      aria-checked="true"
+                      aria-label="Dark mode toggle"
+                    >
+                      <span class="toggle-switch-slider"></span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Change 6: Background Customization -->
+                <div class="form-group bg-customization">
+                  <label class="form-label">Background</label>
+                  <div class="bg-presets" id="bg-presets">
+                    <button
+                      type="button"
+                      class="bg-preset bg-preset--none active"
+                      data-bg="none"
+                      aria-label="No background"
+                    >
+                      None
+                    </button>
+                    <button
+                      type="button"
+                      class="bg-preset bg-preset--gradient-1"
+                      data-bg="gradient-1"
+                      aria-label="Gradient 1"
+                    ></button>
+                    <button
+                      type="button"
+                      class="bg-preset bg-preset--gradient-2"
+                      data-bg="gradient-2"
+                      aria-label="Gradient 2"
+                    ></button>
+                    <button
+                      type="button"
+                      class="bg-preset bg-preset--gradient-3"
+                      data-bg="gradient-3"
+                      aria-label="Gradient 3"
+                    ></button>
+                    <button
+                      type="button"
+                      class="bg-preset bg-preset--gradient-4"
+                      data-bg="gradient-4"
+                      aria-label="Gradient 4"
+                    ></button>
+                    <button
+                      type="button"
+                      class="bg-preset bg-preset--gradient-5"
+                      data-bg="gradient-5"
+                      aria-label="Gradient 5"
+                    ></button>
+                    <button
+                      type="button"
+                      class="bg-preset bg-preset--gradient-6"
+                      data-bg="gradient-6"
+                      aria-label="Gradient 6"
+                    ></button>
+                  </div>
+                  <label
+                    class="btn btn--ghost btn--sm bg-upload-btn"
+                    role="button"
+                    tabindex="0"
+                  >
+                    <span aria-hidden="true">📷</span> Upload from Device
+                    <input
+                      type="file"
+                      id="bg-upload-input"
+                      class="bg-upload-input"
+                      accept="image/*"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    class="btn btn--ghost btn--sm bg-remove-btn"
+                    id="bg-remove-btn"
+                    hidden
+                  >
+                    <span aria-hidden="true">🗑️</span> Remove Custom Background
+                  </button>
+                </div>
+              </div>
+
+              <!-- Sound Settings -->
+              <div class="settings-section glass-card">
+                <h3 class="settings-section-title">
+                  <span aria-hidden="true">🔊</span> Sound
+                </h3>
+                <div class="form-group">
+                  <div class="settings-toggle-row">
+                    <span>Sound Effects</span>
+                    <button
+                      type="button"
+                      class="toggle-switch active"
+                      id="settings-sound-toggle"
+                      role="switch"
+                      aria-checked="true"
+                      aria-label="Sound effects toggle"
+                    >
+                      <span class="toggle-switch-slider"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Data Management -->
+              <div class="settings-section glass-card">
+                <h3 class="settings-section-title">
+                  <span aria-hidden="true">💾</span> Data Management
+                </h3>
+                <div class="settings-data-actions">
+                  <button
+                    type="button"
+                    class="btn btn--primary btn--sm"
+                    id="settings-export-btn"
+                  >
+                    <span aria-hidden="true">📤</span> Export Data (JSON)
+                  </button>
+                  <div class="form-group" style="margin-bottom: 0">
+                    <label
+                      for="settings-import-file"
+                      class="btn btn--ghost btn--sm"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <span aria-hidden="true">📥</span> Import Data (JSON)
+                    </label>
+                    <input
+                      type="file"
+                      id="settings-import-file"
+                      class="sr-only"
+                      accept=".json,application/json"
+                    />
+                  </div>
+                  <hr class="settings-divider" />
+                  <button
+                    type="button"
+                    class="btn btn--danger btn--sm"
+                    id="settings-reset-btn"
+                  >
+                    <span aria-hidden="true">⚠️</span> Reset All Data
+                  </button>
+                </div>
+              </div>
+
+              <!-- About -->
+              <div class="settings-section glass-card">
+                <h3 class="settings-section-title">
+                  <span aria-hidden="true">ℹ️</span> About
+                </h3>
+                <p class="settings-about-text">
+                  <strong>ZENFLOW</strong> v2.0.0<br />
+                  A premium all-in-one productivity app.<br />
+                  Built with ❤️ using pure HTML, CSS &amp; JavaScript.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ========== FOOTER STATS BAR ========== -->
+        <footer class="footer-stats" aria-label="Daily statistics">
+          <div class="footer-stat">
+            <span class="footer-stat-icon" aria-hidden="true">✅</span>
+            <span class="footer-stat-value" id="footer-tasks-completed">0</span>
+            <span class="footer-stat-label">tasks today</span>
+          </div>
+          <div class="footer-stat">
+            <span class="footer-stat-icon" aria-hidden="true">🔥</span>
+            <span class="footer-stat-value" id="footer-streak">0</span>
+            <span class="footer-stat-label">day streak</span>
+          </div>
+          <div class="footer-stat">
+            <span class="footer-stat-icon" aria-hidden="true">🎯</span>
+            <span class="footer-stat-value" id="footer-focus-time">0m</span>
+            <span class="footer-stat-label">focus today</span>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <!-- ==================== TASK MODAL (ADD / EDIT) ==================== -->
+    <div
+      id="task-modal-overlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="task-modal-title"
+      hidden
+    >
+      <div class="modal modal--task">
+        <div class="modal-header">
+          <h2 class="modal-title" id="task-modal-title">Add Task</h2>
+          <button
+            type="button"
+            class="modal-close"
+            id="task-modal-close"
+            aria-label="Close task modal"
+          >
+            ✕
+          </button>
+        </div>
+
+        <form id="task-form" class="task-form" novalidate>
+          <input type="hidden" id="task-form-id" value="" />
+
+          <!-- Natural Language Input -->
+          <div class="form-group form-group--title">
+            <label for="task-form-title" class="sr-only">Task title</label>
+            <input
+              type="text"
+              id="task-form-title"
+              class="form-input form-input--title"
+              placeholder="Task name — try: Buy groceries tomorrow 5pm #personal p1"
+              maxlength="200"
+              required
+              aria-required="true"
+              autocomplete="off"
+            />
+            <p class="form-hint" id="task-form-nlp-hint" hidden></p>
+          </div>
+
+          <!-- Notes -->
+          <div class="form-group">
+            <label for="task-form-notes" class="form-label">Notes</label>
+            <textarea
+              id="task-form-notes"
+              class="form-textarea"
+              placeholder="Add notes…"
+              rows="3"
+              maxlength="2000"
+            ></textarea>
+          </div>
+
+          <!-- Due Date & Time -->
+          <div class="form-row">
+            <div class="form-group form-group--half">
+              <label for="task-form-date" class="form-label">Due Date</label>
+              <input type="date" id="task-form-date" class="form-input" />
+            </div>
+            <div class="form-group form-group--half">
+              <label for="task-form-time" class="form-label">Time</label>
+              <input type="time" id="task-form-time" class="form-input" />
+            </div>
+          </div>
+
+          <!-- Change 10: Task Frequency for recurring tasks -->
+          <div class="form-group">
+            <label for="task-form-frequency" class="form-label">Repeat</label>
+            <select id="task-form-frequency" class="form-select">
+              <option value="none">No repeat</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="custom">Custom (every X days)</option>
+            </select>
+          </div>
+          <div class="form-group" id="task-form-custom-freq-group" hidden>
+            <label for="task-form-custom-freq" class="form-label"
+              >Repeat every (days)</label
+            >
+            <input
+              type="number"
+              id="task-form-custom-freq"
+              class="form-input"
+              placeholder="3"
+              min="1"
+              max="365"
+            />
+          </div>
+
+          <!-- Priority -->
+          <div class="form-group">
+            <label class="form-label">Priority</label>
+            <div
+              class="priority-selector"
+              role="radiogroup"
+              aria-label="Task priority"
+            >
+              <button
+                type="button"
+                class="priority-btn"
+                data-priority="p1"
+                role="radio"
+                aria-checked="false"
+                aria-label="Priority 1 — Urgent"
+              >
+                <span
+                  class="priority-dot priority-dot--p1"
+                  aria-hidden="true"
+                ></span>
+                P1
+              </button>
+              <button
+                type="button"
+                class="priority-btn"
+                data-priority="p2"
+                role="radio"
+                aria-checked="false"
+                aria-label="Priority 2 — High"
+              >
+                <span
+                  class="priority-dot priority-dot--p2"
+                  aria-hidden="true"
+                ></span>
+                P2
+              </button>
+              <button
+                type="button"
+                class="priority-btn"
+                data-priority="p3"
+                role="radio"
+                aria-checked="false"
+                aria-label="Priority 3 — Medium"
+              >
+                <span
+                  class="priority-dot priority-dot--p3"
+                  aria-hidden="true"
+                ></span>
+                P3
+              </button>
+              <button
+                type="button"
+                class="priority-btn active"
+                data-priority="p4"
+                role="radio"
+                aria-checked="true"
+                aria-label="Priority 4 — Low"
+              >
+                <span
+                  class="priority-dot priority-dot--p4"
+                  aria-hidden="true"
+                ></span>
+                P4
+              </button>
+            </div>
+          </div>
+
+          <!-- Difficulty -->
+          <div class="form-group">
+            <label class="form-label">Difficulty</label>
+            <div
+              class="difficulty-selector"
+              role="radiogroup"
+              aria-label="Task difficulty"
+            >
+              <button
+                type="button"
+                class="difficulty-btn active"
+                data-difficulty="easy"
+                role="radio"
+                aria-checked="true"
+                aria-label="Easy — 5 XP"
+              >
+                <span aria-hidden="true">🟢</span> Easy
+              </button>
+              <button
+                type="button"
+                class="difficulty-btn"
+                data-difficulty="medium"
+                role="radio"
+                aria-checked="false"
+                aria-label="Medium — 10 XP"
+              >
+                <span aria-hidden="true">🟡</span> Medium
+              </button>
+              <button
+                type="button"
+                class="difficulty-btn"
+                data-difficulty="hard"
+                role="radio"
+                aria-checked="false"
+                aria-label="Hard — 20 XP"
+              >
+                <span aria-hidden="true">🔴</span> Hard
+              </button>
+            </div>
+          </div>
+
+          <!-- Project -->
+          <div class="form-group">
+            <label for="task-form-project" class="form-label">Project</label>
+            <select id="task-form-project" class="form-select">
+              <option value="">— None —</option>
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <!-- Tags (Change 7: dynamic tags) -->
+          <div class="form-group">
+            <label for="task-form-tags" class="form-label">Tags</label>
+            <input
+              type="text"
+              id="task-form-tags"
+              class="form-input"
+              placeholder="Type and press Enter to add tags"
+              autocomplete="off"
+            />
+            <div class="task-form-tags-display" id="task-form-tags-display">
+              <!-- Tag chips dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Flag / Important -->
+          <div class="form-group">
+            <label class="form-checkbox-label">
+              <input
+                type="checkbox"
+                id="task-form-flagged"
+                class="form-checkbox"
+              />
+              <span class="form-checkbox-custom" aria-hidden="true"></span>
+              <span>⚑ Flag as Important</span>
+            </label>
+          </div>
+
+          <!-- Subtasks -->
+          <div class="form-group">
+            <label class="form-label">Subtasks</label>
+            <ul class="subtask-list" id="task-form-subtasks" role="list">
+              <!-- Dynamically populated -->
+            </ul>
+            <div class="subtask-add">
+              <input
+                type="text"
+                id="task-form-subtask-input"
+                class="form-input form-input--sm"
+                placeholder="Add a subtask…"
+                maxlength="200"
+                autocomplete="off"
+              />
+              <button
+                type="button"
+                class="btn btn--ghost btn--icon"
+                id="task-form-subtask-add-btn"
+                aria-label="Add subtask"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="btn btn--ghost"
+              id="task-form-cancel-btn"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn--danger btn--sm"
+              id="task-form-delete-btn"
+              hidden
+            >
+              <span aria-hidden="true">🗑️</span> Delete
+            </button>
+            <button
+              type="submit"
+              class="btn btn--primary"
+              id="task-form-submit-btn"
+            >
+              Add Task
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== TASK DETAIL PANEL (SLIDE-IN) ==================== -->
+    <div
+      id="task-detail-panel"
+      class="detail-panel"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="task-detail-title"
+      hidden
+    >
+      <div class="detail-panel-inner">
+        <div class="detail-panel-header">
+          <h2 class="detail-panel-title" id="task-detail-title"></h2>
+          <div class="detail-panel-actions">
+            <button
+              type="button"
+              class="btn btn--ghost btn--icon"
+              id="task-detail-edit-btn"
+              aria-label="Edit task"
+            >
+              ✏️
+            </button>
+            <button
+              type="button"
+              class="btn btn--ghost btn--icon"
+              id="task-detail-close-btn"
+              aria-label="Close detail panel"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <div class="detail-panel-body">
+          <div class="detail-row">
+            <span class="detail-label">Status</span>
+            <span class="detail-value" id="task-detail-status"></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Priority</span>
+            <span class="detail-value" id="task-detail-priority"></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Difficulty</span>
+            <span class="detail-value" id="task-detail-difficulty"></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Due</span>
+            <span class="detail-value" id="task-detail-due"></span>
+          </div>
+          <!-- Change 10: Frequency info -->
+          <div class="detail-row" id="task-detail-frequency-row" hidden>
+            <span class="detail-label">Repeats</span>
+            <span class="detail-value" id="task-detail-frequency"></span>
+          </div>
+          <div class="detail-row" id="task-detail-project-row" hidden>
+            <span class="detail-label">Project</span>
+            <span class="detail-value" id="task-detail-project"></span>
+          </div>
+          <div class="detail-row" id="task-detail-tags-row" hidden>
+            <span class="detail-label">Tags</span>
+            <div class="detail-tags" id="task-detail-tags"></div>
+          </div>
+          <div
+            class="detail-row detail-row--block"
+            id="task-detail-notes-row"
+            hidden
+          >
+            <span class="detail-label">Notes</span>
+            <p class="detail-notes" id="task-detail-notes"></p>
+          </div>
+          <div
+            class="detail-row detail-row--block"
+            id="task-detail-subtasks-row"
+            hidden
+          >
+            <span class="detail-label">Subtasks</span>
+            <ul class="detail-subtasks" id="task-detail-subtasks" role="list">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+          <div class="detail-row" id="task-detail-flag-row" hidden>
+            <span class="detail-label">Flagged</span>
+            <span class="detail-value" id="task-detail-flag">⚑ Important</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">XP Reward</span>
+            <span class="detail-value" id="task-detail-xp"></span>
+          </div>
+        </div>
+
+        <div class="detail-panel-footer">
+          <button
+            type="button"
+            class="btn btn--primary btn--block"
+            id="task-detail-complete-btn"
+          >
+            <span aria-hidden="true">✓</span> Mark Complete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PROJECT MODAL ==================== -->
+    <div
+      id="project-modal-overlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="project-modal-title"
+      hidden
+    >
+      <div class="modal modal--project">
+        <div class="modal-header">
+          <h2 class="modal-title" id="project-modal-title">New Project</h2>
+          <button
+            type="button"
+            class="modal-close"
+            id="project-modal-close"
+            aria-label="Close project modal"
+          >
+            ✕
+          </button>
+        </div>
+
+        <form id="project-form" novalidate>
+          <input type="hidden" id="project-form-id" value="" />
+
+          <div class="form-group">
+            <label for="project-form-name" class="form-label"
+              >Project Name</label
+            >
+            <input
+              type="text"
+              id="project-form-name"
+              class="form-input"
+              placeholder="e.g., Website Redesign"
+              maxlength="100"
+              required
+              aria-required="true"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group--half">
+              <label for="project-form-emoji" class="form-label"
+                >Emoji Icon</label
+              >
+              <input
+                type="text"
+                id="project-form-emoji"
+                class="form-input form-input--emoji"
+                placeholder="📁"
+                maxlength="2"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group form-group--half">
+              <label for="project-form-color" class="form-label">Color</label>
+              <input
+                type="color"
+                id="project-form-color"
+                class="form-input form-input--color"
+                value="#6C63FF"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="project-form-due" class="form-label"
+              >Due Date <span class="form-label-hint">(optional)</span></label
+            >
+            <input type="date" id="project-form-due" class="form-input" />
+          </div>
+
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="btn btn--ghost"
+              id="project-form-cancel-btn"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn btn--primary"
+              id="project-form-submit-btn"
+            >
+              Create Project
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== HABIT MODAL (Change 10: Added frequency) ==================== -->
+    <div
+      id="habit-modal-overlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="habit-modal-title"
+      hidden
+    >
+      <div class="modal modal--habit">
+        <div class="modal-header">
+          <h2 class="modal-title" id="habit-modal-title">New Habit</h2>
+          <button
+            type="button"
+            class="modal-close"
+            id="habit-modal-close"
+            aria-label="Close habit modal"
+          >
+            ✕
+          </button>
+        </div>
+
+        <form id="habit-form" novalidate>
+          <input type="hidden" id="habit-form-id" value="" />
+
+          <div class="form-group">
+            <label for="habit-form-name" class="form-label">Habit Name</label>
+            <input
+              type="text"
+              id="habit-form-name"
+              class="form-input"
+              placeholder="e.g., Meditate for 10 minutes"
+              maxlength="100"
+              required
+              aria-required="true"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="habit-form-emoji" class="form-label">Emoji</label>
+            <input
+              type="text"
+              id="habit-form-emoji"
+              class="form-input form-input--emoji"
+              placeholder="🧘"
+              maxlength="2"
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- Change 10: Frequency selector -->
+          <div class="form-group">
+            <label for="habit-form-frequency" class="form-label"
+              >Frequency</label
+            >
+            <select id="habit-form-frequency" class="form-select">
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="custom">Custom (every X days)</option>
+            </select>
+          </div>
+          <div class="form-group" id="habit-form-custom-freq-group" hidden>
+            <label for="habit-form-custom-freq" class="form-label"
+              >Repeat every (days)</label
+            >
+            <input
+              type="number"
+              id="habit-form-custom-freq"
+              class="form-input"
+              placeholder="3"
+              min="1"
+              max="365"
+            />
+          </div>
+
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="btn btn--ghost"
+              id="habit-form-cancel-btn"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn--danger btn--sm"
+              id="habit-form-delete-btn"
+              hidden
+            >
+              <span aria-hidden="true">🗑️</span> Delete
+            </button>
+            <button
+              type="submit"
+              class="btn btn--primary"
+              id="habit-form-submit-btn"
+            >
+              Create Habit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== CONFIRM DIALOG ==================== -->
+    <div
+      id="confirm-overlay"
+      class="modal-overlay"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="confirm-title"
+      aria-describedby="confirm-message"
+      hidden
+    >
+      <div class="modal modal--confirm">
+        <span class="confirm-icon" id="confirm-icon" aria-hidden="true"
+          >⚠️</span
+        >
+        <h2 class="confirm-title" id="confirm-title">Are you sure?</h2>
+        <p class="confirm-message" id="confirm-message">
+          This action cannot be undone.
+        </p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn--ghost" id="confirm-cancel-btn">
+            Cancel
+          </button>
+          <button type="button" class="btn btn--danger" id="confirm-ok-btn">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== KEYBOARD SHORTCUTS ==================== -->
+    <div
+      id="shortcuts-overlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="shortcuts-title"
+      hidden
+    >
+      <div class="modal modal--shortcuts">
+        <div class="modal-header">
+          <h2 class="modal-title" id="shortcuts-title">Keyboard Shortcuts</h2>
+          <button
+            type="button"
+            class="modal-close"
+            id="shortcuts-close"
+            aria-label="Close shortcuts"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="shortcuts-grid">
+          <div class="shortcut-item"><kbd>N</kbd><span>New Task</span></div>
+          <div class="shortcut-item"><kbd>/</kbd><span>Search</span></div>
+          <div class="shortcut-item"><kbd>1</kbd><span>Inbox</span></div>
+          <div class="shortcut-item"><kbd>2</kbd><span>Today</span></div>
+          <div class="shortcut-item"><kbd>3</kbd><span>Upcoming</span></div>
+          <div class="shortcut-item"><kbd>H</kbd><span>Habits</span></div>
+          <div class="shortcut-item"><kbd>F</kbd><span>Focus Timer</span></div>
+          <div class="shortcut-item"><kbd>C</kbd><span>Calendar</span></div>
+          <div class="shortcut-item">
+            <kbd>Esc</kbd><span>Close / Cancel</span>
+          </div>
+          <div class="shortcut-item">
+            <kbd>?</kbd><span>Show Shortcuts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SCREEN READER LIVE REGION ==================== -->
+    <div
+      id="sr-announcer"
+      class="sr-only"
+      aria-live="assertive"
+      aria-atomic="true"
+    ></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
